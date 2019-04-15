@@ -89,6 +89,9 @@ public class UploadUtils {
 			String path,
 			String fileName) throws IOException {
 		log.info("makeThumbnail");
+		log.info("* uploadPath: {}", uploadPath);
+		log.info("* path: {}", path);
+		log.info("* fileName: {}", fileName);
 		BufferedImage sourceImg = ImageIO.read(new File(uploadPath + path, fileName));
 		log.info("makeThumbnail - 1");
 		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);

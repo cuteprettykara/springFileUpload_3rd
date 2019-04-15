@@ -88,18 +88,18 @@ public class UploadUtils {
 			String uploadPath,
 			String path,
 			String fileName) throws IOException {
-	
+		log.info("makeThumbnail");
 		BufferedImage sourceImg = ImageIO.read(new File(uploadPath + path, fileName));
-		
+		log.info("makeThumbnail - 1");
 		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
-		
+		log.info("makeThumbnail - 2");
 		String thumbnailName = uploadPath + path + File.separator + "s_" + fileName;
-		
+		log.info("makeThumbnail - 3");
 		File newFile = new File(thumbnailName);
 		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
-		
+		log.info("makeThumbnail - 4");
 		ImageIO.write(destImg, formatName.toUpperCase(), newFile);
-		
+		log.info("makeThumbnail - 5");
 		// 브라우저에서 윈도우의 경로로 사용하는 '\' 문자가 정상적인 경로로 인식되지 않기 때문에 '/'로 치환해 줍니다.
 		String replacedName = thumbnailName.substring(uploadPath.length()).replace(File.separatorChar, '/');
 		log.info("thumbnailName: {}", thumbnailName);

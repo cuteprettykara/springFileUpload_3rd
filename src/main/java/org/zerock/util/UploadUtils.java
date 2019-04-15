@@ -1,7 +1,6 @@
 package org.zerock.util;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.ImagingOpException;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -17,6 +16,10 @@ import org.springframework.util.FileCopyUtils;
 
 public class UploadUtils {
 	private static final Logger log = LoggerFactory.getLogger(UploadUtils.class);
+	
+	static {
+        ImageIO.scanForPlugins();
+	}
 	
 	public static String uploadFile(
 			String uploadPath, 
@@ -96,6 +99,7 @@ public class UploadUtils {
 		// 브라우저에서 윈도우의 경로로 사용하는 '\' 문자가 정상적인 경로로 인식되지 않기 때문에 '/'로 치환해 줍니다.
 		String replacedName = null;
 		try {
+			
 			BufferedImage sourceImg = ImageIO.read(new File(uploadPath + path, fileName));
 			log.info("makeThumbnail - 1");
 			BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);

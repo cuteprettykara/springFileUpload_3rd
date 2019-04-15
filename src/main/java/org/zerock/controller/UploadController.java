@@ -30,7 +30,7 @@ public class UploadController {
 	}
 	
 	@RequestMapping(value="/uploadForm", method=RequestMethod.POST)
-	public void uploadForm(MultipartFile file, Model model) throws IOException {
+	public String uploadForm(MultipartFile file, Model model) throws IOException {
 		log.info("originalFileName: {}", file.getOriginalFilename());
 		log.info("size: {}", file.getSize());
 		log.info("contentType: {}", file.getContentType());
@@ -38,6 +38,8 @@ public class UploadController {
 		String savedName = uploadFile(file.getOriginalFilename(), file.getBytes());
 		
 		model.addAttribute("savedName", savedName);
+
+		return "uploadResult";
 	}
 
 	private String uploadFile(String originalFilename, byte[] fildData) throws IOException {

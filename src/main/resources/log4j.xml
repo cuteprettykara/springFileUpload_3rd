@@ -17,6 +17,9 @@
     <logger name="org.zerock.util">
 		<level value="info" />
 	</logger>
+    <logger name="javax.imageio.ImageIO">
+		<level value="debug" />
+	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
@@ -37,7 +40,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="debug" />
 		<appender-ref ref="console" />
 	</root>
 	

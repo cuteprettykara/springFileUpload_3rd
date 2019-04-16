@@ -26,7 +26,51 @@
 	<div class="uploadedList"></div>
 	
 	<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+	
+	<!-- handlebars -->
+	<script src="/resources/handlebars/handlebars-v4.1.2.js"></script>
+	
+	<script id="imageTemplate" type="text/x-handlebars-template">
+	<div>
+		<a href='displayFile?fileName={{imageLink}}' target='_blank'>
+			<img src='displayFile?fileName={{data}}' />
+		</a>
+		<small data-src='{{data}}' style='cursor:pointer'>X</small>
+	</div>
+	</script>
+	
+	<script id="fileTemplate" type="text/x-handlebars-template">
+	<div>
+		<a href='displayFile?fileName={{data}}'>
+			{{originalFileName}}
+		</a>
+		<small data-src='{{data}}' style='cursor:pointer'>X</small>
+	</div>
+	</script>
+	
 	<script>
+		function printImage(data, target, templateObject) {
+			var template = Handlebars.compile(templateObject.html());
+			var context = {
+				data: data, 
+				imageLink: getImageLink(data)
+			};
+			var html = template(context);
+			
+			target.append(html);
+		}
+		
+		function printFile(data, target, templateObject) {
+			var template = Handlebars.compile(templateObject.html());
+			var context = {
+				data: data, 
+				originalFileName: getOriginalFileName(data)
+			};
+			var html = template(context);
+			
+			target.append(html);
+		}
+		
 		function checkImageType(fileName) {
 			var pattern = /jpg|gif|png|jpeg/i;
 			
@@ -77,27 +121,14 @@
 				processData: false,
 				contentType: false,
 				success: function(data) {
-					var str = "";
-					
 					console.log(data);
 					console.log(checkImageType(data));
 					
 					if (checkImageType(data)) {
-						str = "<div>"
-							+ "<a href='displayFile?fileName=" + getImageLink(data) + "' target='_blank'>"
-							+ "<img src='displayFile?fileName=" + data + "' />"
-							+ "</a>"
-							+ "<small data-src='" + data + "'>X</small>"
-							+ "</div>";
+						printImage(data, $(".uploadedList"), $('#imageTemplate'));
 					} else {
-						str = "<div><a href='displayFile?fileName=" + data + "'>"
-							+ getOriginalFileName(data) 
-							+ "</a>"
-							+ "<small data-src='" + data + "'>X</small>"
-							+ "</div>";
+						printFile(data, $(".uploadedList"), $('#fileTemplate'));
 					}
-					
-					$(".uploadedList").append(str);
 				}
 			});
 		});

@@ -27,6 +27,12 @@
 	
 	<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script>
+		function checkImageType(fileName) {
+			var pattern = /jpg|gif|png|jpeg/i;
+			
+			return fileName.match(pattern);
+		}
+		
 		$(".fileDrop").on("dragenter dragover", function(event) {
 			event.preventDefault();
 		});
@@ -51,9 +57,23 @@
 				processData: false,
 				contentType: false,
 				success: function(data) {
-					alert(data);
+					var str = "";
+					
+					if (checkImageType(data)) {
+						str = "<div>"
+							+ "<img src='displayFile?fileName=" + data + "' />"
+							+ data 
+							+ "</div>";
+					} else {
+						str = "<div>"
+							+ data 
+							+ "</div>";
+					}
+					
+					$(".uploadedList").append(str);
 				}
 			});
+			
 			
 		});
 	</script>

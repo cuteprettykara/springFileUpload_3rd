@@ -79,7 +79,7 @@ public class UploadController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("displayFile")
+	@RequestMapping("/displayFile")
 	public ResponseEntity<byte[]> displayFile(String fileName) throws IOException {
 		
 		InputStream in = null;
@@ -121,5 +121,28 @@ public class UploadController {
 		}
 		
 		return entity;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/deleteFile")
+	public ResponseEntity<String> deleteFile(String fileName) throws IOException {
+		log.info("deleteFile : {}", fileName);
+		
+		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
+		
+		MediaType mType = MediaUtils.getMediaType(formatName);
+		
+		// 이미지 타입일 경우 : 원본 파일 삭제
+		if (mType != null) {
+			String front = fileName.substring(0,12);
+			String end = fileName.substring(14);
+			new File(UPLOAD_PATH + (front + end).replace('/', File.separatorChar)).delete();
+		}
+		
+		// 이미지 타입일 경우 : 썸네일 이미지 삭제
+		// 이미지 타입이 아닐 경우 : 파일 삭제
+		new File(UPLOAD_PATH + fileName.replace('/', File.separatorChar)).delete();
+		
+		return new ResponseEntity<String>("deleted", HttpStatus.OK);
 	}
 }

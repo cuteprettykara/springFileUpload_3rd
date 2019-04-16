@@ -33,6 +33,15 @@
 			return fileName.match(pattern);
 		}
 		
+		function getOriginalFileName(fileName) {
+			if (checkImageType(fileName)) {
+				return;
+			}
+			
+			var idx = fileName.indexOf("_") + 1;
+			return fileName.substr(idx);
+		}
+		
 		$(".fileDrop").on("dragenter dragover", function(event) {
 			event.preventDefault();
 		});
@@ -59,15 +68,18 @@
 				success: function(data) {
 					var str = "";
 					
+					console.log(data);
+					console.log(checkImageType(data));
+					
 					if (checkImageType(data)) {
 						str = "<div>"
 							+ "<img src='displayFile?fileName=" + data + "' />"
 							+ data 
 							+ "</div>";
 					} else {
-						str = "<div>"
-							+ data 
-							+ "</div>";
+						str = "<div><a href='displayFile?fileName=" + data + "'>"
+							+ getOriginalFileName(data) 
+							+ "</a></div>";
 					}
 					
 					$(".uploadedList").append(str);

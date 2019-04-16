@@ -42,6 +42,17 @@
 			return fileName.substr(idx);
 		}
 		
+		function getImageLink(fileName) {
+			if (!checkImageType(fileName)) {
+				return;
+			}
+			
+			var front = fileName.substr(0,12);
+			var end = fileName.substr(14);
+			
+			return front + end;
+		}
+		
 		$(".fileDrop").on("dragenter dragover", function(event) {
 			event.preventDefault();
 		});
@@ -73,7 +84,9 @@
 					
 					if (checkImageType(data)) {
 						str = "<div>"
+							+ "<a href='displayFile?fileName=" + getImageLink(data) + "' target='_blank'>"
 							+ "<img src='displayFile?fileName=" + data + "' />"
+							+ "</a>"
 							+ data 
 							+ "</div>";
 					} else {
